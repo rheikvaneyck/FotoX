@@ -1,0 +1,11 @@
+!!! 5
+%html
+  %head
+    %title Foto Explorer
+    %link{rel: 'stylesheet', href: '/stylesheets/style.css'}
+  %body
+    #folderbox
+      - @thumbnails.each do |t|
+        %div.tn_box
+          %a{href: "/foto/#{t[0]}"}
+            %img.tn_img(src="#{t[1]}")

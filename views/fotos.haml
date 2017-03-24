@@ -1,0 +1,89 @@
+!!! 5
+%html
+  %head
+    %title Foto Explorer
+    %link{rel: 'stylesheet', href: '/stylesheets/style.css'}
+    %script{type: 'text/javascript', src: '/js/jquery-3.1.1.min.js'}
+    %script{type: 'text/javascript'}
+      $(document).ready(function() {
+      $('#back_btn').click(function(){
+      window.location = "/foto/#{@foto_previous_id}";
+      });
+      $('#fwd_btn').click(function(){
+      window.location = "/foto/#{@foto_next_id}";
+      });      
+      $('#brws_dir').click(function(){
+      $('#fotobrowser').load("/folder/#{@foto.id}");
+      });
+      $('#top100').click(function(){
+      $('#fotobrowser').load("/top100");
+      });
+      $('#mrg_folder').click(function(){
+      window.location = '/merge_folder/#{@foto.id}';
+      });
+      });
+  %body
+    #header
+      %h1 Foto Explorer
+    #subtitle
+      %p 
+        Browse the 
+        %span#nr
+          #{@count} 
+        Fotos in the Database #{@fotodb}
+
+    #sidebar
+      #image_controls
+        %button{type: 'button', class: 'img_cntrl_btn', id: 'back_btn'}
+          <<
+        %button{type: "button", class: 'img_cntrl_btn', id: 'fwd_btn'}
+          >>
+      #dashboard_controls
+        %button{type: "button", class: 'dshb_cntrl_btn', id: 'brws_dir'}
+          Verzeichnis anzeigen
+        %button{type: "button", class: 'dshb_cntrl_btn', id: 'stat'}
+          Statistik
+        %button{type: "button", class: 'dshb_cntrl_btn', id: 'mrg_folder'}
+          Merge Duplikate in Verzeichnissen
+        %button{type: "button", class: 'dshb_cntrl_btn', id: 'top100'}
+          Top 100 Dublikate
+
+      #dashboard_area
+    #fotodisplay
+      #fototitle
+        %h2 #{@id} | #{@filename}
+
+      #fotocanvas
+        %img(src="#{@filepath_save}")
+
+      #fotodetails
+        %table{:border => 0} 
+          %tbody
+            %tr
+              %td Datum:
+              %td #{@date}
+            %tr
+              %td Adresse:
+              %td #{@address}
+            %tr
+              %td Dateipfad:
+              %td #{@filepath}
+            %tr
+              %td Dateigröße:
+              %td #{@size}
+            %tr
+              %td Duplikate:
+              %td #{@duplicates.count - 1}
+            - if @duplicates.count > 0 then
+              - cnt = 0
+              - @duplicates.each do |d|
+                - if d.path != @filepath then
+                  - cnt += 1
+                  %tr
+                    %td{colspan: 2}
+                      #{cnt}) 
+                      %a{title: "#{d.filename}", href: "#{d.id}"} #{d.fullpath}
+    #fotobrowser
+    #footer
+      %hr
+      %p (c) 2017 Marcus Nasarek

@@ -1,0 +1,20 @@
+!!! 5
+%html
+  %head
+    %title Folder Explorer
+    %link{rel: 'stylesheet', href: '/stylesheets/style.css'}
+  %body
+    %table
+      %thead
+        %th Foto ID
+        %th Pfad
+        %th Anzahl Fotos
+        %th Größe
+      %tbody
+        - @folders.each do |f|
+          %tr
+            %td
+              %a{href: "/foto/#{f[1]}"} ID: #{f[0]}
+            %td #{f[1]}
+            %td #{f[2]}
+            %td #{as_size(f[3])}

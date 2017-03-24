@@ -1,0 +1,23 @@
+!!! 5
+%html
+  %head
+    %title Topp 100 Duplikate
+    %link{rel: 'stylesheet', href: '/stylesheets/style.css'}
+  %body
+    #top100_box
+      %table.top100_table
+        %thead
+          %tr
+            %th Anzahl
+            %th Dateiname
+            %th Bild
+        %tbody
+          - @duplicates.each do |d|
+            %tr
+              %td #{d.md5_count}
+              %td #{d.filename}
+              %td
+                %div.tn_box
+                  %a{href: "/foto/#{d.id}"}
+                    %img.tn_img(src="/raid1/shares/Fotos/thumbnails/#{d.md5[0..1]}/#{d.md5}.#{d.filetype}")        
+

@@ -9,6 +9,8 @@
 /test/tmp/
 /test/version_tmp/
 /tmp/
+/db/fotos.sqlite
+/public/raid1
 
 # Used by dotenv library to load environment variables.
 # .env

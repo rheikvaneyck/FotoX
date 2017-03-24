@@ -1,0 +1,4 @@
+#!/bin/bash
+APPDIR="../"
+PATH_TO_SCRIPT="${APPDIR}/scripts"
+find "$1" -type f -exec "${PATH_TO_SCRIPT}/add_fotos_to_db" {} \;

@@ -1,0 +1,4 @@
+#!/bin/bash
+sqlite3 "$1" "DROP TABLE IF EXISTS fotos;"
+sqlite3 "$1" "CREATE TABLE fotos(id INTEGER PRIMARY KEY,md5, filename, filetype, path, fullpath, size, time, timeUnix, geo, address, orig_time, UNIQUE(fullpath));"
+

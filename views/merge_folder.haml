@@ -1,0 +1,22 @@
+!!! 5
+%html
+  %head
+    %title Foto Explorer
+    %link{rel: 'stylesheet', href: '/stylesheets/style.css'}
+    %script{type: 'text/javascript', src: '/js/jquery-3.1.1.min.js'}
+    %script{type: 'text/javascript'}
+      $(document).ready(function() {
+      $('#merge_folder_box_primary').load("/folder/#{@foto.id}");
+      - @duplicates.each do |d|    
+        $('#merge_folder_box_#{d.id}').load("/folder/#{d.id}");
+      });
+  %body
+    %div.merge_folder
+      %div.merge_folder_header
+        %h1 #{@foto.path}
+      %div{class: 'merge_folder_box', id: 'merge_folder_box_primary'}
+    - @duplicates.each do |d|
+      %div{class: 'merge_folder', id: "merge_folder_#{d.id}"}
+        %div.merge_folder_header
+          %h1 #{d.path}
+        %div{class: 'merge_folder_box', id: "merge_folder_box_#{d.id}"}    

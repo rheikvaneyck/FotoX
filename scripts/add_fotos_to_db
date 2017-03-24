@@ -1,0 +1,41 @@
+#!/bin/bash
+# Abhängikeiten: 
+# 	- exiftool 
+#	- md5sum
+#	- ./get_exif_gps
+
+APPDIR="../"
+SQLITEDB="${APPDIR}/db/fotos.sqlite"
+path=$(dirname "$(readlink -f "$1")")
+filename=$(basename "$1")
+filesize=$(stat -c%s "$1")
+filedate=$(stat -c%y "$1")
+filedateUnix=$(stat -c%Y "$1")
+filetype="${filename##*.}"
+# Nur für kleine Dateien die komplette MD5 rechnen
+# Für große Dateien über 256k nur die ersten 256k
+MAX_MD5_FILESIZE=262144
+if [[ $filesize -gt $MAX_MD5_FILESIZE ]];
+then
+  md5=$(dd if="${path}/${filename}" bs=512 count=512 status='none' | md5sum - | awk '{print $1}')
+else
+  md5=$(md5sum "$1"| awk '{print $1}')
+fi
+
+if [ $# -gt 1 ]; 
+then
+  echo -e "MD5:${md5}\nName:${filename}\nPath: ${path}\nSize ${filesize}"
+  echo -e "Filetype: ${filetype}"
+  echo -e "Last Change: ${filedate}"
+fi
+geo=$(get_exif_gps "$1")
+if [ -n "${geo}" ];
+then
+	address=$(echo "${geo}" | cut -d\; -f2)
+	geo=$(echo "${geo}" | cut -d\; -f1)
+else
+	address=""
+	geo=""
+fi
+orig_time=$(exiftool "$1" | grep "Date/Time Original" | head -n1 | cut -d: -f2-)
+sqlite3 ${SQLITEDB} "INSERT OR IGNORE INTO files (md5, filename, filetype, path, fullpath, size, time, timeUnix, geo, address, orig_time) VALUES ('${md5}','${filename}', '${filetype}', '${path}', '${path}/${filename}', '${filesize}', '${filedate}', '${filedateUnix}','${geo}','${address}','${orig_time}');"
