@@ -27,6 +27,7 @@ get '/' do
 end
 
 options '/' do
+  # Aktuell unterstützte HTTP Verben
   response.headers["Allow"] = "HEAD,GET,OPTIONS"
   204
 end
