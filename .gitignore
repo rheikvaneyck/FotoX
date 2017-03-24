@@ -11,6 +11,7 @@
 /tmp/
 /db/fotos.sqlite
 /public/raid1
+/.sass-cache
 
 # Used by dotenv library to load environment variables.
 # .env
